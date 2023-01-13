@@ -9,9 +9,9 @@ from sklearn import metrics
 from sklearn.model_selection import train_test_split
 from project.dejta_frejm import df, y
 
-#training and testing
+# training and testing
 
-x_train, x_test, y_train, y_test = sklearn.model_selection.train_test_split(df,y,test_size = 0.2)
+x_train, x_test, y_train, y_test = sklearn.model_selection.train_test_split(df, y, test_size = 0.2)
 
 
 clf = svm.SVC(kernel='linear', C=2)

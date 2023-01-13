@@ -6,8 +6,9 @@ dve klasifikacije:
 1. u jednoj prepoznajemo rano neurolosko poboljsanje 
 (osnovna obelezja: zivotna dob, nihss na prijemu, aspect score) #prva verzija algoritma, samo s njima mogu
 (dodajemo obelezja, mozda ce neka biti redudantna, izbaciti pca transformacijom: hiperdenzni znak (bilo koja), glikemija, map, premorbidni rms, 
-koriscena terapija - od asa do antihta sva obelezja, komorbiditeti/faktori rizika - od hta do alkohola pri cemu dodajemo jos jednu vrednost obelezja NE nema faktora rizika, sii - 
-nemamo ga za sve pacijente tako da ga najverovatnije necemo koristiti iako je znacajane),
+koriscena terapija - od asa do antihta sva obelezja, komorbiditeti/faktori rizika - od hta do alkohola pri cemu dodajemo jos jednu vrednost
+ obelezja NE nema faktora rizika, sii - 
+nemamo ga za sve pacijente tako da ga najverovatnije necemo koristiti iako je znacajan),
 tip cvi (koja cirkulacija je zahvacena, ujedno i tip mozdanog udara),
 toast (uzrok cvi, mozdanog udara, zvanicno postoji 5 kategorija, neutvrdjeno je takodje kategorija)
 
@@ -15,7 +16,7 @@ toast (uzrok cvi, mozdanog udara, zvanicno postoji 5 kategorija, neutvrdjeno je 
 ne izbacujemo u prvoj verziji nista
 labela za ovu klasifikaciju je pad nihss score-a za 40% nakon 24h u odnosu na inicijalnu vrednost
 (terapija) lekove grupisati u jedno obelezje i dati im vrednosti od 0 do 5 sa vrednoscu da nije nista uzimao pacijent, napraviti legendu pored
-(komorbititeti) grupisemo u jedno obelezje i kodiramo sa vrednostima od 0 do 7 i dodatna da nema nikakvog komorbiditeta
+(komorbiditeti) grupisemo u jedno obelezje i kodiramo sa vrednostima od 0 do 7 i dodatna da nema nikakvog komorbiditeta
 
 napraviti varijablu nihss na prijemu, pa nihss posle 24h, labela = (nihss24h - nihssprijem)/nihssprijem, ako je ta razlika kroz pocetna vrednost nihss veci ili jednak od 0.4 onda doslo je do
 poboljsanja,
