@@ -4,7 +4,7 @@ import pandas as pd
 import numpy as np
 
 data = pd.read_excel(
-    r'C:\Users\Laganina\OneDrive - Univerzitet u Novom Sadu\Desktop\machine_learning\project-med\podaci.xlsx')
+    r'C:\Users\Laganina\OneDrive - Univerzitet u Novom Sadu\Desktop\machine_learning\project-med\project\podaci.xlsx')
 
 # osnovna obelezja: starost, nihss na prijemu, aspect score
 
@@ -101,4 +101,5 @@ df1 = pd.DataFrame(y, columns=['STANJE'])
 # stvaranje joined df sa  y iliti labelom
 merged = pd.concat([df, df1], axis=1)
 
-print(merged)
+#x je df, y je y
+
