@@ -1,7 +1,6 @@
 import tensorflow
 import keras
 import pandas as pd
-from tabulate import tabulate
 import numpy as np
 import sklearn
 from sklearn import svm 
@@ -11,8 +10,6 @@ from sklearn.model_selection import train_test_split
 data = pd.read_excel(r'C:\Users\Laganina\OneDrive - Univerzitet u Novom Sadu\Desktop\machine_learning\project-med\podaci.xlsx')
 
 #osnovna obelezja: starost, nihss na prijemu, aspect score
-
-columns = list(data.columns)
 
 #data frame sa osnovnim obelezjima
 basic = data[['STAROST', 'NIHSS na prijemu', 'ASPECTS', 'NIHSS 24h']]
@@ -63,7 +60,6 @@ merged = pd.concat([df,df1], axis=1)
 
 x_train, x_test, y_train, y_test = sklearn.model_selection.train_test_split(df,y,test_size = 0.2)
 
-classes = ['better', 'worse']
 
 clf = svm.SVC(kernel='linear', C=2)
 clf.fit(x_train, y_train)
