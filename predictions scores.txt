@@ -1,0 +1,10 @@
+- A precision score is used to measure the model performance in measuring the count of
+ true positives in the correct manner out of all positive predictions made.
+- Recall score is used to measure the model performance in terms of measuring the count of true positives
+ in a correct manner out of all the actual positive values.
+- Precision-Recall score is a useful measure of success of prediction when the classes are very imbalanced. 
+- Accuracy score is used to measure the model performance in terms of measuring the ratio of sum of true positive 
+and true negatives out of all the predictions made.
+- F1-score is harmonic mean of precision and recall score and is used as a metrics in the scenarios where
+ choosing either of precision or recall score can result in 
+ compromise in terms of model giving high false positives and false negatives respectively.

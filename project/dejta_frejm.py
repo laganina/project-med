@@ -221,6 +221,8 @@ merged = merged.dropna()
 
 # skracivanje y tako da ima isti broj varijabli kao i ostale kolone
 y = merged["STANJE"]
+df1 = merged['STANJE']
+
 
 merged = merged.astype({'STAROST':'int'})
 merged = merged.astype({'NIHSS na prijemu':'int'})
@@ -228,7 +230,4 @@ merged = merged.astype({'TOAST':'int'})
 
 
 merged = merged.T.drop_duplicates().T
-
-
-
 
