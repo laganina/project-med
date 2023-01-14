@@ -12,6 +12,9 @@ data = pd.read_excel(
 basic = data[['STAROST', 'NIHSS na prijemu', 'ASPECTS', 'NIHSS 24h']]
 df_basic = pd.DataFrame(basic)
 
+df_basic['ASPECTS'] = df_basic['ASPECTS'].replace('7 do 8', 8)
+df_basic['ASPECTS'] = df_basic['ASPECTS'].replace('8 do 9', 9)
+df_basic['ASPECTS'] = df_basic['ASPECTS'].replace('9 do 10', 10)
 
 # df sa dodatnim obelezjima
 dodatni = data[['CT hiperdenzni znak','TT','Glikemija','MAP','OTT (onset to treatment time)','DNT (door to neadle time)',
@@ -33,10 +36,15 @@ df_dodatni = df_dodatni.drop(labels='AntiHTA', axis=1)
 
 # vrednosti od 0 do 5 za da (koji lek) ne
 df_lek['ASA'] = df_lek['ASA'].map({'Da': 1, 'Ne': 0})
+df_lek['ASA'] = df_lek['ASA'].map({'da': 1, 'ne': 0})
 df_lek['Clopidogrel'] = df_lek['Clopidogrel'].map({'Da': 2, 'Ne': 0})
+df_lek['Clopidogrel'] = df_lek['Clopidogrel'].map({'da': 2, 'ne': 0})
 df_lek['OAKT'] = df_lek['OAKT'].map({'Da': 3, 'Ne': 0})
+df_lek['OAKT'] = df_lek['OAKT'].map({'da': 3, 'ne': 0})
 df_lek['Statini'] = df_lek['Statini'].map({'Da': 4, 'Ne': 0})
+df_lek['Statini'] = df_lek['Statini'].map({'da': 4, 'ne': 0})
 df_lek['AntiHTA'] = df_lek['AntiHTA'].map({'Da': 5, 'Ne': 0})
+df_lek['AntiHTA'] = df_lek['AntiHTA'].map({'da': 5, 'ne': 0})
 
 # empty cells filled with 0
 df_lek = df_lek.fillna(0)
@@ -74,13 +82,21 @@ df_dodatni = df_dodatni.drop(labels='Alkohol', axis=1)
 
 #vrednosti od 0 do 7 za da (komorbiditete) ne
 df_kom['HTA'] = df_kom['HTA'].map({'Da': 1, 'Ne': 0})
+df_kom['HTA'] = df_kom['HTA'].map({'da': 1, 'ne': 0})
 df_kom['DM'] = df_kom['DM'].map({'Da': 2, 'Ne': 0})
+df_kom['DM'] = df_kom['DM'].map({'da': 2, 'ne': 0})
 df_kom['Pušenje'] = df_kom['Pušenje'].map({'Da': 3, 'Ne': 0})
+df_kom['Pušenje'] = df_kom['Pušenje'].map({'da': 3, 'ne': 0})
 df_kom['HLP'] = df_kom['HLP'].map({'Da': 4, 'Ne': 0})
+df_kom['HLP'] = df_kom['HLP'].map({'da': 4, 'ne': 0})
 df_kom['Tip HLP'] = df_kom['Tip HLP'].map({'Da': 5, 'Ne': 0})
+df_kom['Tip HLP'] = df_kom['Tip HLP'].map({'da': 5, 'ne': 0})
 df_kom['AA'] = df_kom['AA'].map({'Da': 6, 'Ne': 0})
+df_kom['AA'] = df_kom['AA'].map({'da': 6, 'ne': 0})
 df_kom['CMP'] = df_kom['CMP'].map({'Da': 7, 'Ne': 0})
+df_kom['CMP'] = df_kom['CMP'].map({'da': 7, 'ne': 0})
 df_kom['Alkohol'] = df_kom['Alkohol'].map({'Da': 8, 'Ne': 0})
+df_kom['Alkohol'] = df_kom['Alkohol'].map({'da': 8, 'ne': 0})
 
 # empty cells filled with 0
 df_kom = df_kom.fillna(0)
@@ -90,8 +106,8 @@ df_kom['DM'] = df_kom['DM'].astype(int)
 df_kom['Pušenje'] = df_kom['Pušenje'].astype(int)
 df_kom['HLP'] = df_kom['HLP'].astype(int)
 df_kom['Tip HLP'] = df_kom['HLP'].astype(int)
-df_kom['Tip AA'] = df_kom['AA'].astype(int)
-df_kom['Tip CMP'] = df_kom['CMP'].astype(int)
+df_kom['AA'] = df_kom['AA'].astype(int)
+df_kom['CMP'] = df_kom['CMP'].astype(int)
 df_kom['Alkohol'] = df_kom['Alkohol'].astype(int)
 
 # svi lekovi u jednoj koloni sa nazivom komorbiditeti
@@ -108,13 +124,25 @@ df_komorbiditeti = pd.DataFrame(df_k)
 
 # da ne bilo koja pretvoreno u 1 0 2
 df_dodatni['CT hiperdenzni znak'] = df_dodatni['CT hiperdenzni znak'].replace('Bilo koja', 2)
+df_dodatni['CT hiperdenzni znak'] = df_dodatni['CT hiperdenzni znak'].replace('bilo koja', 2)
 df_dodatni['CT hiperdenzni znak'] = df_dodatni['CT hiperdenzni znak'].replace('Da', 1)
+df_dodatni['CT hiperdenzni znak'] = df_dodatni['CT hiperdenzni znak'].replace('da', 1)
 df_dodatni['CT hiperdenzni znak'] = df_dodatni['CT hiperdenzni znak'].replace('Ne', 0)
+df_dodatni['CT hiperdenzni znak'] = df_dodatni['CT hiperdenzni znak'].replace('ne', 0)
 
 # tip cvi - pretvoreni u 0 1 2 3
 df_dodatni['TIP CVI'] = df_dodatni['TIP CVI'].replace('TACI', 0)
+df_dodatni['TIP CVI'] = df_dodatni['TIP CVI'].replace('TACI    ', 0)
+df_dodatni['TIP CVI'] = df_dodatni['TIP CVI'].replace('TACI  ', 0)
+df_dodatni['TIP CVI'] = df_dodatni['TIP CVI'].replace('TACI   ', 0)
 df_dodatni['TIP CVI'] = df_dodatni['TIP CVI'].replace('PACI', 1)
+df_dodatni['TIP CVI'] = df_dodatni['TIP CVI'].replace('PACI  ', 1)
+df_dodatni['TIP CVI'] = df_dodatni['TIP CVI'].replace('PACI ', 1)
 df_dodatni['TIP CVI'] = df_dodatni['TIP CVI'].replace('LACI', 2)
+df_dodatni['TIP CVI'] = df_dodatni['TIP CVI'].replace('LAC', 2)
+df_dodatni['TIP CVI'] = df_dodatni['TIP CVI'].replace('LACI ', 2)
+df_dodatni['TIP CVI'] = df_dodatni['TIP CVI'].replace('LACI  ', 2)
+df_dodatni['TIP CVI'] = df_dodatni['TIP CVI'].replace('LACI?', 2)
 df_dodatni['TIP CVI'] = df_dodatni['TIP CVI'].replace('POCI', 3)
 
 # tip tost - pretvoreni u 0 1 2 3 4 5
@@ -185,12 +213,14 @@ df = joined.drop(labels='NIHSS 24h', axis=1)
 df1 = pd.DataFrame(y, columns=['STANJE'])
 
 # stvaranje joined df sa  y iliti labelom
-#x je df, y je y
+# x je df, y je y
 merged = pd.concat([df, df1], axis=1)
 
 # merged df sa izbacenim vrstama koje sadrze NaN value
 merged = merged.dropna()
 
+# skracivanje y tako da ima isti broj varijabli kao i ostale kolone
+y = merged["STANJE"]
 
 merged = merged.astype({'STAROST':'int'})
 merged = merged.astype({'NIHSS na prijemu':'int'})
@@ -199,7 +229,6 @@ merged = merged.astype({'TOAST':'int'})
 
 merged = merged.T.drop_duplicates().T
 
-print(merged)
 
 
 
