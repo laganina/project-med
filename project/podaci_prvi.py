@@ -131,7 +131,7 @@ df_kom['Komorbiditeti'] = df_kom[df_kom.columns[0:]].apply(
 
 # data frame jedne kolone sa nazivom komorbiditeti
 df_k = df_kom['Komorbiditeti']
-print(df_k)
+
 # napravljen data frame za komorbiditete
 df_komorbiditeti = pd.DataFrame(df_k)
 
@@ -224,9 +224,7 @@ merged = pd.concat([df, df1], axis=1)
 merged = merged.dropna()
 
 # skracivanje y tako da ima isti broj varijabli kao i ostale kolone
-y = merged["STANJE"]
-df1 = merged['STANJE']
-
+y = merged['STANJE']
 
 merged = merged.astype({'STAROST':'int'})
 merged = merged.astype({'NIHSS na prijemu':'int'})
@@ -236,4 +234,5 @@ merged = merged.astype({'ASPECTS':'int'})
 
 merged = merged.T.drop_duplicates().T
 
-print(merged[['ASPECTS']].to_string(index=False))
+merged = merged.drop(labels='Tip HLP',axis=1)
+merged = merged.drop(labels='STANJE',axis=1)
