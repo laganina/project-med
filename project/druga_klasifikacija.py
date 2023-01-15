@@ -6,13 +6,13 @@ import sklearn
 import matplotlib.pyplot as plt
 from sklearn import svm
 from sklearn import metrics
-from project.podaci_drugi import df_basic, df_rankin
+from project.podaci_drugi import df, df_rankin
 from sklearn.metrics import precision_score, recall_score, f1_score
 
 
 
 # training and testing
-x_train, x_test, y_train, y_test = sklearn.model_selection.train_test_split(df_basic, df_rankin, test_size = 0.2)
+x_train, x_test, y_train, y_test = sklearn.model_selection.train_test_split(df, df_rankin, test_size = 0.2)
 
 
 clf = svm.SVC(kernel='linear', C=2)
