@@ -2,7 +2,6 @@ import tensorflow
 import keras
 import pandas as pd
 import numpy as np
-
 data = pd.read_excel(
     r'C:\Users\Laganina\OneDrive - Univerzitet u Novom Sadu\Desktop\machine_learning\project-med\project\podaci.xlsx')
 
@@ -10,6 +9,7 @@ data = pd.read_excel(
 
 # data frame sa osnovnim obelezjima
 basic = data[['STAROST', 'NIHSS na prijemu', 'ASPECTS', 'NIHSS 24h']]
+
 df_basic = pd.DataFrame(basic)
 
 df_basic['ASPECTS'] = df_basic['ASPECTS'].replace('7 do 8', 8)
@@ -56,7 +56,7 @@ df_lek['Statini'] = df_lek['Statini'].astype(int)
 df_lek['AntiHTA'] = df_lek['AntiHTA'].astype(int)
 
 # svi lekovi u jednoj koloni
-df_lek['Lekovi'] = df_lek[df_lek.columns[1:]].apply(
+df_lek['Lekovi'] = df_lek[df_lek.columns[0:]].apply(
     lambda x: ''.join(x.dropna().astype(str)),
     axis=1
 )
@@ -68,7 +68,10 @@ df_l = df_lek['Lekovi']
 df_lekovi = pd.DataFrame(df_l)
 
 # komorbiditeti izdvojeni u zaseban df
-df_kom = df_dodatni[['HTA','DM','Pušenje','HLP','Tip HLP','AA','CMP','Alkohol']].copy()
+df_kom = df_dodatni[['HTA','DM','Pušenje','HLP','AA','CMP','Alkohol']].copy()
+
+# tip hlp izdvojen u zaseban df
+df_tipHLP = df_dodatni[['Tip HLP']].copy()
 
 # svi kom izbaceni iz df_dodatni
 df_dodatni = df_dodatni.drop(labels='HTA', axis=1)
@@ -80,24 +83,35 @@ df_dodatni = df_dodatni.drop(labels='AA', axis=1)
 df_dodatni = df_dodatni.drop(labels='CMP', axis=1)
 df_dodatni = df_dodatni.drop(labels='Alkohol', axis=1)
 
-#vrednosti od 0 do 7 za da (komorbiditete) ne
-df_kom['HTA'] = df_kom['HTA'].map({'Da': 1, 'Ne': 0})
-df_kom['HTA'] = df_kom['HTA'].map({'da': 1, 'ne': 0})
-df_kom['DM'] = df_kom['DM'].map({'Da': 2, 'Ne': 0})
-df_kom['DM'] = df_kom['DM'].map({'da': 2, 'ne': 0})
-df_kom['Pušenje'] = df_kom['Pušenje'].map({'Da': 3, 'Ne': 0})
-df_kom['Pušenje'] = df_kom['Pušenje'].map({'da': 3, 'ne': 0})
-df_kom['HLP'] = df_kom['HLP'].map({'Da': 4, 'Ne': 0})
-df_kom['HLP'] = df_kom['HLP'].map({'da': 4, 'ne': 0})
-df_kom['Tip HLP'] = df_kom['Tip HLP'].map({'Da': 5, 'Ne': 0})
-df_kom['Tip HLP'] = df_kom['Tip HLP'].map({'da': 5, 'ne': 0})
-df_kom['AA'] = df_kom['AA'].map({'Da': 6, 'Ne': 0})
-df_kom['AA'] = df_kom['AA'].map({'da': 6, 'ne': 0})
-df_kom['CMP'] = df_kom['CMP'].map({'Da': 7, 'Ne': 0})
-df_kom['CMP'] = df_kom['CMP'].map({'da': 7, 'ne': 0})
-df_kom['Alkohol'] = df_kom['Alkohol'].map({'Da': 8, 'Ne': 0})
-df_kom['Alkohol'] = df_kom['Alkohol'].map({'da': 8, 'ne': 0})
+# hipo hdlp holesterolemija, II, nr je ne?
 
+# vrednosti od 0 do 2 za tip HLP
+df_tipHLP['Tip HLP'] = df_tipHLP['Tip HLP'].replace('Bez poremećaja', 0)
+df_tipHLP['Tip HLP'] = df_tipHLP['Tip HLP'].replace('Bez poremećja', 0)
+df_tipHLP['Tip HLP'] = df_tipHLP['Tip HLP'].replace('Bez poremćaja', 0)
+df_tipHLP['Tip HLP'] = df_tipHLP['Tip HLP'].replace('bez poremećaja', 0)
+df_tipHLP['Tip HLP'] = df_tipHLP['Tip HLP'].replace('Ne', 0)
+df_tipHLP['Tip HLP'] = df_tipHLP['Tip HLP'].replace('IIa', 1)
+df_tipHLP['Tip HLP'] = df_tipHLP['Tip HLP'].replace('IIb', 2)
+df_tipHLP['Tip HLP'] = df_tipHLP['Tip HLP'].replace('IV', 3)
+df_tipHLP['Tip HLP'] = df_tipHLP['Tip HLP'].replace('HLP IV', 3)
+
+
+# vrednosti od 0 do 7 za da (komorbiditete) ne, bez tip HLP
+df_kom['HTA'] = df_kom['HTA'].map({'Da': 1, 'Ne': 0, 1:1,0:0})
+df_kom['HTA'] = df_kom['HTA'].map({'da': 1, 'ne': 0, 1:1,0:0})
+df_kom['DM'] = df_kom['DM'].map({'Da': 2, 'Ne': 0, 2:2,0:0})
+df_kom['DM'] = df_kom['DM'].map({'da': 2, 'ne': 0, 2:2,0:0})
+df_kom['Pušenje'] = df_kom['Pušenje'].map({'Da': 3, 'Ne': 0, 3:3,0:0})
+df_kom['Pušenje'] = df_kom['Pušenje'].map({'da': 3, 'ne': 0, 3:3,0:0})
+df_kom['HLP'] = df_kom['HLP'].map({'Da': 4, 'Ne': 0, 4:4,0:0})
+df_kom['HLP'] = df_kom['HLP'].map({'da': 4, 'ne': 0, 4:4,0:0})
+df_kom['AA'] = df_kom['AA'].map({'Da': 5, 'Ne': 0, 5:5,0:0})
+df_kom['AA'] = df_kom['AA'].map({'da': 5, 'ne': 0, 5:5,0:0})
+df_kom['CMP'] = df_kom['CMP'].map({'Da': 6, 'Ne': 0, 6:6,0:0})
+df_kom['CMP'] = df_kom['CMP'].map({'da': 6, 'ne': 0, 6:6,0:0})
+df_kom['Alkohol'] = df_kom['Alkohol'].map({'Da': 7, 'Ne': 0, 7:7,0:0})
+df_kom['Alkohol'] = df_kom['Alkohol'].map({'da': 7, 'ne': 0, 7:7,0:0})
 # empty cells filled with 0
 df_kom = df_kom.fillna(0)
 
@@ -105,20 +119,19 @@ df_kom['HTA'] = df_kom['HTA'].astype(int)
 df_kom['DM'] = df_kom['DM'].astype(int)
 df_kom['Pušenje'] = df_kom['Pušenje'].astype(int)
 df_kom['HLP'] = df_kom['HLP'].astype(int)
-df_kom['Tip HLP'] = df_kom['HLP'].astype(int)
 df_kom['AA'] = df_kom['AA'].astype(int)
 df_kom['CMP'] = df_kom['CMP'].astype(int)
 df_kom['Alkohol'] = df_kom['Alkohol'].astype(int)
 
 # svi lekovi u jednoj koloni sa nazivom komorbiditeti
-df_kom['Komorbiditeti'] = df_kom[df_kom.columns[1:]].apply(
+df_kom['Komorbiditeti'] = df_kom[df_kom.columns[0:]].apply(
     lambda x: ''.join(x.dropna().astype(str)),
     axis=1
 )
 
 # data frame jedne kolone sa nazivom komorbiditeti
 df_k = df_kom['Komorbiditeti']
-
+print(df_k)
 # napravljen data frame za komorbiditete
 df_komorbiditeti = pd.DataFrame(df_k)
 
@@ -167,20 +180,11 @@ joined = pd.concat([joined, df_dodatni], axis=1)
 joined = df_basic.join(df_komorbiditeti, lsuffix='_caller', rsuffix='_other')
 # spojeni komorbiditeti sa ostatkom joined
 joined = pd.concat([joined, df_dodatni], axis=1)
+# spojen tip HLP sa ostatkom joined
+joined = pd.concat([joined, df_tipHLP], axis=1)
 
 
 
-
-'''
-
-koriscena terapija - od asa do antihta sva obelezja, 
-komorbiditeti/faktori rizika - od hta do alkohola pri cemu dodajemo jos jednu vrednost obelezja NE nema faktora rizika
-
-ne izbacujemo u prvoj verziji nista
-(terapija) lekove grupisati u jedno obelezje i dati im vrednosti od 0 do 5 sa vrednoscu da nije nista uzimao pacijent,
- napraviti legendu pored
-(komorbititeti) grupisemo u jedno obelezje i kodiramo sa vrednostima od 0 do 7 i dodatna da nema nikakvog komorbiditeta
-'''
 
 # labela za ovu klasifikaciju je pad nihss score-a za 40% nakon 24h u odnosu na inicijalnu vrednost
 # napraviti varijablu nihss na prijemu, pa nihss posle 24h, labela = (nihss24h - nihssprijem)/nihssprijem,
@@ -227,7 +231,9 @@ df1 = merged['STANJE']
 merged = merged.astype({'STAROST':'int'})
 merged = merged.astype({'NIHSS na prijemu':'int'})
 merged = merged.astype({'TOAST':'int'})
+merged = merged.astype({'ASPECTS':'int'})
 
 
 merged = merged.T.drop_duplicates().T
 
+print(merged[['ASPECTS']].to_string(index=False))
