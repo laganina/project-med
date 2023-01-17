@@ -77,6 +77,19 @@ df_lek['Statini'] = df_lek['Statini'].map({'Da': 4, 'Ne': 0})
 df_lek['Statini'] = df_lek['Statini'].map({'da': 4, 'ne': 0})
 df_lek['AntiHTA'] = df_lek['AntiHTA'].map({'Da': 5, 'Ne': 0})
 df_lek['AntiHTA'] = df_lek['AntiHTA'].map({'da': 5, 'ne': 0})
+
+
+# OVO RADI:
+
+# df_lek['AntiHTA'].replace(('Da', 'Ne'), (1, 0), inplace=True)
+# df_lek['AntiHTA'].replace(('da', 'ne'), (1, 0), inplace=True)
+
+
+
+
+# df_lek = binary_answers('ASA', )  # KADA SVE ISTESTIRAS, MOZES DA RASPOREDI KOD PO FUNKCIJAMA DA BI BIO PREGLEDNIJI
+# SVE FUNKCIJE MOZES SACUVATI U FAJL FUNKCIJE.PY I NA POCETKU OVE SKRIPTE SAMO IMPORTUJES FUNKCIJE KOJE TI TREBAJU 
+
 print('df_lek, zamena brojevima:')
 print(df_lek)
 
