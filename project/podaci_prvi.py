@@ -35,16 +35,26 @@ df_dodatni = df_dodatni.drop(labels='AntiHTA', axis=1)
 
 
 # vrednosti od 0 do 5 za da (koji lek) ne
-df_lek['ASA'] = df_lek['ASA'].map({'Da': 1, 'Ne': 0})
-df_lek['ASA'] = df_lek['ASA'].map({'da': 1, 'ne': 0})
-df_lek['Clopidogrel'] = df_lek['Clopidogrel'].map({'Da': 2, 'Ne': 0})
-df_lek['Clopidogrel'] = df_lek['Clopidogrel'].map({'da': 2, 'ne': 0})
-df_lek['OAKT'] = df_lek['OAKT'].map({'Da': 3, 'Ne': 0})
-df_lek['OAKT'] = df_lek['OAKT'].map({'da': 3, 'ne': 0})
-df_lek['Statini'] = df_lek['Statini'].map({'Da': 4, 'Ne': 0})
-df_lek['Statini'] = df_lek['Statini'].map({'da': 4, 'ne': 0})
-df_lek['AntiHTA'] = df_lek['AntiHTA'].map({'Da': 5, 'Ne': 0})
-df_lek['AntiHTA'] = df_lek['AntiHTA'].map({'da': 5, 'ne': 0})
+df_lek['ASA'] = df_lek['ASA'].replace('Da', 1)
+df_lek['Clopidogrel'] = df_lek['Clopidogrel'].replace('Da', 2)
+df_lek['OAKT'] = df_lek['OAKT'].replace('Da', 3)
+df_lek['Statini'] = df_lek['Statini'].replace('Da', 4)
+df_lek['AntiHTA'] = df_lek['AntiHTA'].replace('Da', 5)
+df_lek['ASA'] = df_lek['ASA'].replace('da', 1)
+df_lek['Clopidogrel'] = df_lek['Clopidogrel'].replace('da', 2)
+df_lek['OAKT'] = df_lek['OAKT'].replace('da', 3)
+df_lek['Statini'] = df_lek['Statini'].replace('da', 4)
+df_lek['AntiHTA'] = df_lek['AntiHTA'].replace('da', 5)
+df_lek['ASA'] = df_lek['ASA'].replace('Ne', 0)
+df_lek['Clopidogrel'] = df_lek['Clopidogrel'].replace('Ne', 0)
+df_lek['OAKT'] = df_lek['OAKT'].replace('Ne', 0)
+df_lek['Statini'] = df_lek['Statini'].replace('Ne', 0)
+df_lek['AntiHTA'] = df_lek['AntiHTA'].replace('Ne', 0)
+df_lek['ASA'] = df_lek['ASA'].replace('ne', 0)
+df_lek['Clopidogrel'] = df_lek['Clopidogrel'].replace('ne', 0)
+df_lek['OAKT'] = df_lek['OAKT'].replace('ne', 0)
+df_lek['Statini'] = df_lek['Statini'].replace('ne', 0)
+df_lek['AntiHTA'] = df_lek['AntiHTA'].replace('ne', 0)
 
 # empty cells filled with 0
 df_lek = df_lek.fillna(0)
@@ -95,45 +105,57 @@ df_tipHLP['Tip HLP'] = df_tipHLP['Tip HLP'].replace('IIa', 1)
 df_tipHLP['Tip HLP'] = df_tipHLP['Tip HLP'].replace('IIb', 2)
 df_tipHLP['Tip HLP'] = df_tipHLP['Tip HLP'].replace('IV', 3)
 df_tipHLP['Tip HLP'] = df_tipHLP['Tip HLP'].replace('HLP IV', 3)
-
+df_tipHLP['Tip HLP'] = df_tipHLP['Tip HLP'].replace('nr', np.nan)
+df_tipHLP['Tip HLP'] = df_tipHLP['Tip HLP'].replace('n/a', np.nan)
 
 # vrednosti od 0 do 7 za da (komorbiditete) ne, bez tip HLP
-df_kom['HTA'] = df_kom['HTA'].map({'Da': 1, 'Ne': 0, 1:1,0:0})
-df_kom['HTA'] = df_kom['HTA'].map({'da': 1, 'ne': 0, 1:1,0:0})
-df_kom['DM'] = df_kom['DM'].map({'Da': 2, 'Ne': 0, 2:2,0:0})
-df_kom['DM'] = df_kom['DM'].map({'da': 2, 'ne': 0, 2:2,0:0})
-df_kom['Pušenje'] = df_kom['Pušenje'].map({'Da': 3, 'Ne': 0, 3:3,0:0})
-df_kom['Pušenje'] = df_kom['Pušenje'].map({'da': 3, 'ne': 0, 3:3,0:0})
-df_kom['HLP'] = df_kom['HLP'].map({'Da': 4, 'Ne': 0, 4:4,0:0})
-df_kom['HLP'] = df_kom['HLP'].map({'da': 4, 'ne': 0, 4:4,0:0})
-df_kom['AA'] = df_kom['AA'].map({'Da': 5, 'Ne': 0, 5:5,0:0})
-df_kom['AA'] = df_kom['AA'].map({'da': 5, 'ne': 0, 5:5,0:0})
-df_kom['CMP'] = df_kom['CMP'].map({'Da': 6, 'Ne': 0, 6:6,0:0})
-df_kom['CMP'] = df_kom['CMP'].map({'da': 6, 'ne': 0, 6:6,0:0})
-df_kom['Alkohol'] = df_kom['Alkohol'].map({'Da': 7, 'Ne': 0, 7:7,0:0})
-df_kom['Alkohol'] = df_kom['Alkohol'].map({'da': 7, 'ne': 0, 7:7,0:0})
-# empty cells filled with 0
-df_kom = df_kom.fillna(0)
+df_kom['HTA'] = df_kom['HTA'].replace('Da', 1)
+df_kom['HTA'] = df_kom['HTA'].replace('da', 1)
+df_kom['DM'] = df_kom['DM'].replace('Da', 2)
+df_kom['DM'] = df_kom['DM'].replace('da', 2)
+df_kom['Pušenje'] = df_kom['Pušenje'].replace('Da', 3)
+df_kom['Pušenje'] = df_kom['Pušenje'].replace('da', 3)
+df_kom['HLP'] = df_kom['HLP'].replace('Da', 4)
+df_kom['HLP'] = df_kom['HLP'].replace('da', 4)
+df_kom['AA'] = df_kom['AA'].replace('Da', 5)
+df_kom['AA'] = df_kom['AA'].replace('da', 5)
+df_kom['CMP'] = df_kom['CMP'].replace('Da', 6)
+df_kom['CMP'] = df_kom['CMP'].replace('Da ', 6)
+df_kom['CMP'] = df_kom['CMP'].replace('Da (CMP hypertrophica comp)', 6)
+df_kom['CMP'] = df_kom['CMP'].replace('Da (CMP ischaemica9', 6)
+df_kom['CMP'] = df_kom['CMP'].replace('Da (CMP ischaemica)', 6)
+df_kom['CMP'] = df_kom['CMP'].replace('Da (CMP valvulars)', 6)
+df_kom['CMP'] = df_kom['CMP'].replace('Da (CMP valvularis chr. Com EF 45%)', 6)
+df_kom['CMP'] = df_kom['CMP'].replace('Da (CMP valvularis chr. Com)', 6)
+df_kom['CMP'] = df_kom['CMP'].replace('Da (CMP dilatativa, EF 23%)', 6)
+df_kom['CMP'] = df_kom['CMP'].replace('Da (CMP hypertensiva)', 6)
+df_kom['CMP'] = df_kom['CMP'].replace('Da (CMP isch)', 6)
+df_kom['CMP'] = df_kom['CMP'].replace('Da (CMP hypertrophica comp)', 6)
+df_kom['CMP'] = df_kom['CMP'].replace('Da (CMP dilatativa EF 35%)', 6)
+df_kom['CMP'] = df_kom['CMP'].replace('Da (CMP dilatativa)', 6)
+df_kom['CMP'] = df_kom['CMP'].replace('da', 6)
+df_kom['CMP'] = df_kom['CMP'].replace('da (CMP hypertensiva hypertrophica comp)', 6)
+df_kom['CMP'] = df_kom['CMP'].replace('da (CMP ischaemica)', 6)
+df_kom['CMP'] = df_kom['CMP'].replace('da, CMP valvularis', 6)
+df_kom['Alkohol'] = df_kom['Alkohol'].replace('Da', 7)
+df_kom['Alkohol'] = df_kom['Alkohol'].replace('Da', 7)
 
-df_kom['HTA'] = df_kom['HTA'].astype(int)
-df_kom['DM'] = df_kom['DM'].astype(int)
-df_kom['Pušenje'] = df_kom['Pušenje'].astype(int)
-df_kom['HLP'] = df_kom['HLP'].astype(int)
-df_kom['AA'] = df_kom['AA'].astype(int)
-df_kom['CMP'] = df_kom['CMP'].astype(int)
-df_kom['Alkohol'] = df_kom['Alkohol'].astype(int)
+df_kom['HTA'] = df_kom['HTA'].replace('Ne', 0)
+df_kom['HTA'] = df_kom['HTA'].replace('ne', 0)
+df_kom['DM'] = df_kom['DM'].replace('Ne', 0)
+df_kom['DM'] = df_kom['DM'].replace('ne', 0)
+df_kom['Pušenje'] = df_kom['Pušenje'].replace('Ne', 0)
+df_kom['Pušenje'] = df_kom['Pušenje'].replace('ne', 0)
+df_kom['HLP'] = df_kom['HLP'].replace('Ne', 0)
+df_kom['HLP'] = df_kom['HLP'].replace('ne', 0)
+df_kom['HLP'] = df_kom['HLP'].replace('nr', np.nan)
+df_kom['AA'] = df_kom['AA'].replace('Ne', 0)
+df_kom['AA'] = df_kom['AA'].replace('ne', 0)
+df_kom['CMP'] = df_kom['CMP'].replace('Ne', 0)
+df_kom['CMP'] = df_kom['CMP'].replace('ne', 0)
+df_kom['Alkohol'] = df_kom['Alkohol'].replace('Ne', 0)
+df_kom['Alkohol'] = df_kom['Alkohol'].replace('ne', 0)
 
-# svi lekovi u jednoj koloni sa nazivom komorbiditeti
-df_kom['Komorbiditeti'] = df_kom[df_kom.columns[0:]].apply(
-    lambda x: ''.join(x.dropna().astype(str)),
-    axis=1
-)
-
-# data frame jedne kolone sa nazivom komorbiditeti
-df_k = df_kom['Komorbiditeti']
-
-# napravljen data frame za komorbiditete
-df_komorbiditeti = pd.DataFrame(df_k)
 
 # da ne bilo koja pretvoreno u 1 0 2
 df_dodatni['CT hiperdenzni znak'] = df_dodatni['CT hiperdenzni znak'].replace('Bilo koja', 2)
@@ -170,27 +192,68 @@ df_dodatni['TOAST'] = df_dodatni['TOAST'].replace('Neutvrđen', 4)
 df_dodatni['TOAST'] = df_dodatni['TOAST'].replace('Neutrvđen', 4)
 df_dodatni['TOAST'] = df_dodatni['TOAST'].replace('Stroke mimic', 5)
 
+# napravljen data frame za komorbiditete
+df_kom = pd.DataFrame(df_kom)
 
 # spojeni df sa lekovima
 joined = df_basic.join(df_dodatni, lsuffix='_caller', rsuffix='_other')
+print(joined)
 # spojeni lekovi sa ostatkom joined
-joined = pd.concat([joined, df_dodatni], axis=1)
-
-# spojen df sa komorbiditetima
-joined = df_basic.join(df_komorbiditeti, lsuffix='_caller', rsuffix='_other')
-# spojeni komorbiditeti sa ostatkom joined
-joined = pd.concat([joined, df_dodatni], axis=1)
+joined = joined.join([df_lekovi], lsuffix='_caller', rsuffix='_other')
+print(joined)
 # spojen tip HLP sa ostatkom joined
-joined = pd.concat([joined, df_tipHLP], axis=1)
+joined = joined.join([df_tipHLP], lsuffix='_caller', rsuffix='_other')
+
+#joined as df_komorbiditeti sa df_dodatni
+joined = joined.join([df_kom], lsuffix='_caller', rsuffix='_other')
+
+# dropped nan values
+joined = joined.dropna()
+
+# kom izbaceni u zaseban df
+df_komorbiditeti = joined[['HTA', 'DM', 'Pušenje', 'HLP', 'AA', 'CMP', 'Alkohol']].copy()
 
 
+df_komorbiditeti = df_komorbiditeti.astype({'HTA' :int})
+df_komorbiditeti = df_komorbiditeti.astype({'DM' :int})
+df_komorbiditeti = df_komorbiditeti.astype({'Pušenje' :int})
+df_komorbiditeti = df_komorbiditeti.astype({'HLP' :int})
+df_komorbiditeti = df_komorbiditeti.astype({'AA' :int})
+df_komorbiditeti = df_komorbiditeti.astype({'CMP' :int})
+df_komorbiditeti = df_komorbiditeti.astype({'Alkohol' :int})
 
+# svi komorbiditeti u jednoj koloni sa nazivom komorbiditeti
+df_komorbiditeti['Komorbiditeti'] = df_komorbiditeti[df_komorbiditeti.columns[0:]].apply(
+    lambda x: ''.join(x.dropna().astype(str)),
+    axis=1
+)
+
+
+df_komorbiditeti = df_komorbiditeti.drop(labels='HTA', axis=1)
+df_komorbiditeti = df_komorbiditeti.drop(labels='DM', axis=1)
+df_komorbiditeti = df_komorbiditeti.drop(labels='Pušenje', axis=1)
+df_komorbiditeti = df_komorbiditeti.drop(labels='HLP', axis=1)
+df_komorbiditeti = df_komorbiditeti.drop(labels='AA', axis=1)
+df_komorbiditeti = df_komorbiditeti.drop(labels='CMP', axis=1)
+df_komorbiditeti = df_komorbiditeti.drop(labels='Alkohol', axis=1)
+
+
+joined = joined.join([df_komorbiditeti], lsuffix='_caller', rsuffix='_other')
+joined = joined.drop(labels='HTA', axis=1)
+joined = joined.drop(labels='DM', axis=1)
+joined = joined.drop(labels='Pušenje', axis=1)
+joined = joined.drop(labels='HLP', axis=1)
+joined = joined.drop(labels='AA', axis=1)
+joined = joined.drop(labels='CMP', axis=1)
+joined = joined.drop(labels='Alkohol', axis=1)
 
 # labela za ovu klasifikaciju je pad nihss score-a za 40% nakon 24h u odnosu na inicijalnu vrednost
 # napraviti varijablu nihss na prijemu, pa nihss posle 24h, labela = (nihss24h - nihssprijem)/nihssprijem,
 #  ako je ta razlika kroz pocetna vrednost nihss veci ili jednak od 0.4 onda doslo je do
 # poboljsanja, ako je manji od 0.4 onda je doslo do pogorsanja
 
+joined = joined.astype({'NIHSS na prijemu':'int'})
+joined = joined.astype({'NIHSS 24h':'int'})
 
 # izdvojeni nihss parametri
 nihssprijem = joined['NIHSS na prijemu']
@@ -198,7 +261,7 @@ nihss24 = joined['NIHSS 24h']
 
 # napravljena lista koja ce predstavljati labelu
 label = []
-for i in range(len(nihssprijem)):
+for i in nihssprijem:
     label.append((nihss24[i] - nihssprijem[i]) / nihssprijem[i])
 
 # poboljsanje = 0, pogorsanje = 1
@@ -216,7 +279,7 @@ df = joined.drop(labels='NIHSS 24h', axis=1)
 # list to data frame
 df1 = pd.DataFrame(y, columns=['STANJE'])
 
-# stvaranje joined df sa  y iliti labelom
+# stvaranje joined df sa y iliti labelom
 # x je df, y je y
 merged = pd.concat([df, df1], axis=1)
 
@@ -227,12 +290,16 @@ merged = merged.dropna()
 y = merged['STANJE']
 
 merged = merged.astype({'STAROST':'int'})
-merged = merged.astype({'NIHSS na prijemu':'int'})
 merged = merged.astype({'TOAST':'int'})
 merged = merged.astype({'ASPECTS':'int'})
+merged = merged.astype({'Komorbiditeti':'int'})
+# empty cells filled with 0
+df_kom = df_kom.fillna(0)
 
 
 merged = merged.T.drop_duplicates().T
 
 merged = merged.drop(labels='Tip HLP',axis=1)
 merged = merged.drop(labels='STANJE',axis=1)
+
+print(merged)
