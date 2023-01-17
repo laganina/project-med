@@ -3,8 +3,10 @@ import keras
 import pandas as pd
 import numpy as np
 
-data = pd.read_excel(
-    r'C:\Users\Laganina\OneDrive - Univerzitet u Novom Sadu\Desktop\machine_learning\project-med\project\podaci.xlsx')
+# data = pd.read_excel(
+#     r'C:\Users\Laganina\OneDrive - Univerzitet u Novom Sadu\Desktop\machine_learning\project-med\project\podaci.xlsx')
+data = pd.read_excel('podaci.xlsx') 
+
 
 #komplikacije (pneumonija, infekcija, duboke tromboze, nema=0)
 

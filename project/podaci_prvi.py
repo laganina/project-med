@@ -2,19 +2,40 @@ import tensorflow
 import keras
 import pandas as pd
 import numpy as np
-data = pd.read_excel(
-    r'C:\Users\Laganina\OneDrive - Univerzitet u Novom Sadu\Desktop\machine_learning\project-med\project\podaci.xlsx')
 
-# osnovna obelezja: starost, nihss na prijemu, aspect score
+# ***********************************************************
+# *********** RANO NEUROLOSKO POBOLJSANJE *******************
+# ***********************************************************
+
+# data = pd.read_excel(
+#     r'C:\Users\Laganina\OneDrive - Univerzitet u Novom Sadu\Desktop\machine_learning\project-med\project\podaci.xlsx')
+data = pd.read_excel(r'C:\Users\Olivera\Desktop\FTN rad\podaci.xlsx')
+
+# ****************************************
+# *********** df_basic *******************
+# ****************************************
+
+# OSNOVNA OBELEZJA: 
+#   - STAROST, 
+#   - NIHSS na prijemu, 
+#   - ASPECTS 
 
 # data frame sa osnovnim obelezjima
 basic = data[['STAROST', 'NIHSS na prijemu', 'ASPECTS', 'NIHSS 24h']]
 
 df_basic = pd.DataFrame(basic)
 
-df_basic['ASPECTS'] = df_basic['ASPECTS'].replace('7 do 8', 8)
+df_basic['ASPECTS'] = df_basic['ASPECTS'].replace('7 do 8', 8)         
 df_basic['ASPECTS'] = df_basic['ASPECTS'].replace('8 do 9', 9)
 df_basic['ASPECTS'] = df_basic['ASPECTS'].replace('9 do 10', 10)
+print('df basic:')
+print(df_basic)
+# ISPOD ISPISANE TABLICE CE PRIKAZATI NJENE DIMENZIJE 
+
+
+# ***************************************
+# *********** dodatni *******************
+# ***************************************
 
 # df sa dodatnim obelezjima
 dodatni = data[['CT hiperdenzni znak','TT','Glikemija','MAP','OTT (onset to treatment time)','DNT (door to neadle time)',
@@ -22,9 +43,18 @@ dodatni = data[['CT hiperdenzni znak','TT','Glikemija','MAP','OTT (onset to trea
                 'HTA','DM','Pušenje','HLP','Tip HLP','AA','CMP','Alkohol']]
 
 df_dodatni = pd.DataFrame(dodatni)
+print('df_dodatni:')
+print(df_dodatni)
+
+# ***************************************
+# *********** lekovi *******************
+# ***************************************
+
 
 # df za lekove izdvojen iz df_dodatni
 df_lek = df_dodatni[['ASA', 'Clopidogrel','OAKT', 'Statini', 'AntiHTA']].copy()
+print('df_lek, tek ucitano:')
+print(df_lek)
 
 # svi lekovi izbaceni iz df_dodatni
 df_dodatni = df_dodatni.drop(labels='ASA', axis=1)
@@ -32,10 +62,12 @@ df_dodatni = df_dodatni.drop(labels='Clopidogrel', axis=1)
 df_dodatni = df_dodatni.drop(labels='OAKT', axis=1)
 df_dodatni = df_dodatni.drop(labels='Statini', axis=1)
 df_dodatni = df_dodatni.drop(labels='AntiHTA', axis=1)
+print('df_dodatni posle izbacivanja lekova:')
+print(df_dodatni)
 
 
 # vrednosti od 0 do 5 za da (koji lek) ne
-df_lek['ASA'] = df_lek['ASA'].map({'Da': 1, 'Ne': 0})
+df_lek['ASA'] = df_lek['ASA'].map({'Da': 1, 'Ne': 0})                       
 df_lek['ASA'] = df_lek['ASA'].map({'da': 1, 'ne': 0})
 df_lek['Clopidogrel'] = df_lek['Clopidogrel'].map({'Da': 2, 'Ne': 0})
 df_lek['Clopidogrel'] = df_lek['Clopidogrel'].map({'da': 2, 'ne': 0})
@@ -45,17 +77,29 @@ df_lek['Statini'] = df_lek['Statini'].map({'Da': 4, 'Ne': 0})
 df_lek['Statini'] = df_lek['Statini'].map({'da': 4, 'ne': 0})
 df_lek['AntiHTA'] = df_lek['AntiHTA'].map({'Da': 5, 'Ne': 0})
 df_lek['AntiHTA'] = df_lek['AntiHTA'].map({'da': 5, 'ne': 0})
+print('df_lek, zamena brojevima:')
+print(df_lek)
 
-# empty cells filled with 0
-df_lek = df_lek.fillna(0)
+# empty cells filled with 0                                                           # KAKO CEMO RAZLIKOVATI NE ZA BILO KOJI LEK OD EMPTY CELL-A?
+df_lek = df_lek.fillna(0)                                                             # TREBA IH IZBACITI NA KRAJU 
+print('df_lek, zamena praznih polja nulama:')
+print(df_lek)
+
+
+# ***************************************
+# *********** CAST TO INT  **************
+# ***************************************
 
 df_lek['ASA'] = df_lek['ASA'].astype(int)
 df_lek['Clopidogrel'] = df_lek['Clopidogrel'].astype(int)
 df_lek['OAKT'] = df_lek['OAKT'].astype(int)
 df_lek['Statini'] = df_lek['Statini'].astype(int)
 df_lek['AntiHTA'] = df_lek['AntiHTA'].astype(int)
+print('df lekovi, castovanje u int:')
+print(df_lek)
 
-# svi lekovi u jednoj koloni
+
+# svi lekovi u jednoj koloni                                          
 df_lek['Lekovi'] = df_lek[df_lek.columns[0:]].apply(
     lambda x: ''.join(x.dropna().astype(str)),
     axis=1
@@ -63,9 +107,18 @@ df_lek['Lekovi'] = df_lek[df_lek.columns[0:]].apply(
 
 # data frame jedne kolone sa nazivom lekovi
 df_l = df_lek['Lekovi']
+print('df lekovi konacno:')
+print(df_l)
+
 
 # napravljen data frame za lekove
 df_lekovi = pd.DataFrame(df_l)
+
+
+# ***************************************
+# *********** komorbiditeti *************
+# ***************************************
+
 
 # komorbiditeti izdvojeni u zaseban df
 df_kom = df_dodatni[['HTA','DM','Pušenje','HLP','AA','CMP','Alkohol']].copy()
