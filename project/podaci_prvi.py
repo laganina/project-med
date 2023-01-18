@@ -2,10 +2,22 @@ import tensorflow
 import keras
 import pandas as pd
 import numpy as np
+
+# ***********************************************************
+# *********** RANO NEUROLOSKO POBOLJSANJE *******************
+# ***********************************************************
+
 data = pd.read_excel(
     r'C:\Users\Laganina\OneDrive - Univerzitet u Novom Sadu\Desktop\machine_learning\project-med\project\podaci.xlsx')
 
-# osnovna obelezja: starost, nihss na prijemu, aspect score
+# ****************************************
+# *********** df_basic *******************
+# ****************************************
+
+# OSNOVNA OBELEZJA:
+#   - STAROST,
+#   - NIHSS na prijemu,
+#   - ASPECTS
 
 # data frame sa osnovnim obelezjima
 basic = data[['STAROST', 'NIHSS na prijemu', 'ASPECTS', 'NIHSS 24h']]
@@ -15,6 +27,14 @@ df_basic = pd.DataFrame(basic)
 df_basic['ASPECTS'] = df_basic['ASPECTS'].replace('7 do 8', 8)
 df_basic['ASPECTS'] = df_basic['ASPECTS'].replace('8 do 9', 9)
 df_basic['ASPECTS'] = df_basic['ASPECTS'].replace('9 do 10', 10)
+print('df basic:')
+print(df_basic)
+# ISPOD ISPISANE TABLICE CE PRIKAZATI NJENE DIMENZIJE
+
+
+# ***************************************
+# *********** dodatni *******************
+# ***************************************
 
 # df sa dodatnim obelezjima
 dodatni = data[['CT hiperdenzni znak','TT','Glikemija','MAP','OTT (onset to treatment time)','DNT (door to neadle time)',
@@ -23,8 +43,19 @@ dodatni = data[['CT hiperdenzni znak','TT','Glikemija','MAP','OTT (onset to trea
 
 df_dodatni = pd.DataFrame(dodatni)
 
+print('df_dodatni:')
+print(df_dodatni)
+
+# ***************************************
+# *********** lekovi *******************
+# ***************************************
+
+
 # df za lekove izdvojen iz df_dodatni
 df_lek = df_dodatni[['ASA', 'Clopidogrel','OAKT', 'Statini', 'AntiHTA']].copy()
+
+print('df_lek, tek ucitano:')
+print(df_lek)
 
 # svi lekovi izbaceni iz df_dodatni
 df_dodatni = df_dodatni.drop(labels='ASA', axis=1)
@@ -33,6 +64,8 @@ df_dodatni = df_dodatni.drop(labels='OAKT', axis=1)
 df_dodatni = df_dodatni.drop(labels='Statini', axis=1)
 df_dodatni = df_dodatni.drop(labels='AntiHTA', axis=1)
 
+print('df_dodatni posle izbacivanja lekova:')
+print(df_dodatni)
 
 # vrednosti od 0 do 5 za da (koji lek) ne
 df_lek['ASA'] = df_lek['ASA'].replace('Da', 1)
@@ -56,26 +89,12 @@ df_lek['OAKT'] = df_lek['OAKT'].replace('ne', 0)
 df_lek['Statini'] = df_lek['Statini'].replace('ne', 0)
 df_lek['AntiHTA'] = df_lek['AntiHTA'].replace('ne', 0)
 
-# empty cells filled with 0
-df_lek = df_lek.fillna(0)
+print('df_lek, zamena brojevima:')
+print(df_lek)
 
-df_lek['ASA'] = df_lek['ASA'].astype(int)
-df_lek['Clopidogrel'] = df_lek['Clopidogrel'].astype(int)
-df_lek['OAKT'] = df_lek['OAKT'].astype(int)
-df_lek['Statini'] = df_lek['Statini'].astype(int)
-df_lek['AntiHTA'] = df_lek['AntiHTA'].astype(int)
-
-# svi lekovi u jednoj koloni
-df_lek['Lekovi'] = df_lek[df_lek.columns[0:]].apply(
-    lambda x: ''.join(x.dropna().astype(str)),
-    axis=1
-)
-
-# data frame jedne kolone sa nazivom lekovi
-df_l = df_lek['Lekovi']
-
-# napravljen data frame za lekove
-df_lekovi = pd.DataFrame(df_l)
+# ***************************************
+# *********** komorbiditeti *************
+# ***************************************
 
 # komorbiditeti izdvojeni u zaseban df
 df_kom = df_dodatni[['HTA','DM','Pušenje','HLP','AA','CMP','Alkohol']].copy()
@@ -107,6 +126,9 @@ df_tipHLP['Tip HLP'] = df_tipHLP['Tip HLP'].replace('IV', 3)
 df_tipHLP['Tip HLP'] = df_tipHLP['Tip HLP'].replace('HLP IV', 3)
 df_tipHLP['Tip HLP'] = df_tipHLP['Tip HLP'].replace('nr', np.nan)
 df_tipHLP['Tip HLP'] = df_tipHLP['Tip HLP'].replace('n/a', np.nan)
+
+print('df_tipHLP, zamena brojevima:')
+print(df_tipHLP)
 
 # vrednosti od 0 do 7 za da (komorbiditete) ne, bez tip HLP
 df_kom['HTA'] = df_kom['HTA'].replace('Da', 1)
@@ -156,6 +178,8 @@ df_kom['CMP'] = df_kom['CMP'].replace('ne', 0)
 df_kom['Alkohol'] = df_kom['Alkohol'].replace('Ne', 0)
 df_kom['Alkohol'] = df_kom['Alkohol'].replace('ne', 0)
 
+print('df_kom, zamena brojevima:')
+print(df_kom)
 
 # da ne bilo koja pretvoreno u 1 0 2
 df_dodatni['CT hiperdenzni znak'] = df_dodatni['CT hiperdenzni znak'].replace('Bilo koja', 2)
@@ -164,6 +188,9 @@ df_dodatni['CT hiperdenzni znak'] = df_dodatni['CT hiperdenzni znak'].replace('D
 df_dodatni['CT hiperdenzni znak'] = df_dodatni['CT hiperdenzni znak'].replace('da', 1)
 df_dodatni['CT hiperdenzni znak'] = df_dodatni['CT hiperdenzni znak'].replace('Ne', 0)
 df_dodatni['CT hiperdenzni znak'] = df_dodatni['CT hiperdenzni znak'].replace('ne', 0)
+
+print('df_dodatni, CT, zamena brojevima:')
+print(df_dodatni[['CT hiperdenzni znak']])
 
 # tip cvi - pretvoreni u 0 1 2 3
 df_dodatni['TIP CVI'] = df_dodatni['TIP CVI'].replace('TACI', 0)
@@ -180,6 +207,9 @@ df_dodatni['TIP CVI'] = df_dodatni['TIP CVI'].replace('LACI  ', 2)
 df_dodatni['TIP CVI'] = df_dodatni['TIP CVI'].replace('LACI?', 2)
 df_dodatni['TIP CVI'] = df_dodatni['TIP CVI'].replace('POCI', 3)
 
+print('df_dodatni, tip cvi, zamena brojevima:')
+print(df_dodatni[['TIP CVI']])
+
 # tip tost - pretvoreni u 0 1 2 3 4 5
 df_dodatni['TOAST'] = df_dodatni['TOAST'].replace('LAA', 0)
 df_dodatni['TOAST'] = df_dodatni['TOAST'].replace('CE', 1)
@@ -192,6 +222,9 @@ df_dodatni['TOAST'] = df_dodatni['TOAST'].replace('Neutvrđen', 4)
 df_dodatni['TOAST'] = df_dodatni['TOAST'].replace('Neutrvđen', 4)
 df_dodatni['TOAST'] = df_dodatni['TOAST'].replace('Stroke mimic', 5)
 
+print('df_dodatni, TOAST, zamena brojevima:')
+print(df_dodatni[['TOAST']])
+
 # napravljen data frame za komorbiditete
 df_kom = pd.DataFrame(df_kom)
 
@@ -199,7 +232,7 @@ df_kom = pd.DataFrame(df_kom)
 joined = df_basic.join(df_dodatni, lsuffix='_caller', rsuffix='_other')
 print(joined)
 # spojeni lekovi sa ostatkom joined
-joined = joined.join([df_lekovi], lsuffix='_caller', rsuffix='_other')
+joined = joined.join([df_lek], lsuffix='_caller', rsuffix='_other')
 print(joined)
 # spojen tip HLP sa ostatkom joined
 joined = joined.join([df_tipHLP], lsuffix='_caller', rsuffix='_other')
@@ -207,12 +240,25 @@ joined = joined.join([df_tipHLP], lsuffix='_caller', rsuffix='_other')
 #joined as df_komorbiditeti sa df_dodatni
 joined = joined.join([df_kom], lsuffix='_caller', rsuffix='_other')
 
+print('sve spojeno: ')
+print(joined)
+
 # dropped nan values
 joined = joined.dropna()
+
+print('bez nan val sve spojeno: ')
+print(joined)
+
+# ***************************************
+# *********** komorbiditeti *************
+# ***************************************
 
 # kom izbaceni u zaseban df
 df_komorbiditeti = joined[['HTA', 'DM', 'Pušenje', 'HLP', 'AA', 'CMP', 'Alkohol']].copy()
 
+# ***************************************
+# *********** CAST TO INT  **************
+# ***************************************
 
 df_komorbiditeti = df_komorbiditeti.astype({'HTA' :int})
 df_komorbiditeti = df_komorbiditeti.astype({'DM' :int})
@@ -247,6 +293,43 @@ joined = joined.drop(labels='AA', axis=1)
 joined = joined.drop(labels='CMP', axis=1)
 joined = joined.drop(labels='Alkohol', axis=1)
 
+print('joined samo sa komorbiditeti: ')
+print(joined)
+
+# ***************************************
+# *********** lekovi *******************
+# ***************************************
+
+df_lekovi = joined[['ASA', 'Clopidogrel', 'OAKT', 'Statini', 'AntiHTA']].copy()
+
+# ***************************************
+# *********** CAST TO INT  **************
+# ***************************************
+
+df_lekovi['ASA'] = df_lekovi['ASA'].astype(int)
+df_lekovi['Clopidogrel'] = df_lekovi['Clopidogrel'].astype(int)
+df_lekovi['OAKT'] = df_lekovi['OAKT'].astype(int)
+df_lekovi['Statini'] = df_lekovi['Statini'].astype(int)
+df_lekovi['AntiHTA'] = df_lekovi['AntiHTA'].astype(int)
+
+# svi lekovi u jednoj koloni
+df_lekovi['Lekovi'] = df_lekovi[df_lek.columns[0:]].apply(
+    lambda x: ''.join(x.dropna().astype(str)),
+    axis=1
+)
+
+df_lekovi = df_lekovi.drop(labels='ASA',axis=1)
+df_lekovi = df_lekovi.drop(labels='Clopidogrel',axis=1)
+df_lekovi = df_lekovi.drop(labels='OAKT',axis=1)
+df_lekovi = df_lekovi.drop(labels='Statini',axis=1)
+df_lekovi = df_lekovi.drop(labels='AntiHTA',axis=1)
+
+
+joined = joined.join([df_lekovi], lsuffix='_caller', rsuffix='_other')
+
+print('samo s lekovi: ')
+print(joined)
+
 # labela za ovu klasifikaciju je pad nihss score-a za 40% nakon 24h u odnosu na inicijalnu vrednost
 # napraviti varijablu nihss na prijemu, pa nihss posle 24h, labela = (nihss24h - nihssprijem)/nihssprijem,
 #  ako je ta razlika kroz pocetna vrednost nihss veci ili jednak od 0.4 onda doslo je do
@@ -279,9 +362,15 @@ df = joined.drop(labels='NIHSS 24h', axis=1)
 # list to data frame
 df1 = pd.DataFrame(y, columns=['STANJE'])
 
+print('joined sa score: ')
+print(joined)
+
 # stvaranje joined df sa y iliti labelom
 # x je df, y je y
 merged = pd.concat([df, df1], axis=1)
+
+print('merged sa y, bez nihss 24h: ')
+print(merged)
 
 # merged df sa izbacenim vrstama koje sadrze NaN value
 merged = merged.dropna()
@@ -289,13 +378,16 @@ merged = merged.dropna()
 # skracivanje y tako da ima isti broj varijabli kao i ostale kolone
 y = merged['STANJE']
 
+print('samo y, bez ostatka: ')
+print(y)
+
 merged = merged.astype({'STAROST':'int'})
 merged = merged.astype({'TOAST':'int'})
 merged = merged.astype({'ASPECTS':'int'})
 merged = merged.astype({'Komorbiditeti':'int'})
+
 # empty cells filled with 0
 df_kom = df_kom.fillna(0)
-
 
 merged = merged.T.drop_duplicates().T
 

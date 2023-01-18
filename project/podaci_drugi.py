@@ -94,6 +94,7 @@ df_rankin = df[['RANKIN 90 dana']].copy()
 df_rankin = pd.DataFrame(df_rankin)
 df = df.drop(labels='RANKIN 90 dana',axis=1)
 
+
 print(df.shape)
 print(df_rankin.shape)
 
