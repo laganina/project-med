@@ -8,7 +8,7 @@ from sklearn import svm
 from sklearn import metrics
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.linear_model import LogisticRegression
-from project.podaci_prvi import merged, y
+from podaci_prvi import merged, y
 from sklearn.metrics import precision_score, recall_score, f1_score, roc_auc_score, roc_curve
 
 # training and testing, merged + y
