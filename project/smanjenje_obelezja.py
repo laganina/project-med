@@ -12,6 +12,7 @@ from sklearn.preprocessing import StandardScaler
 
 merged = obelezja
 y = labela 
+feature_names = list(merged.columns)
 
 # select the columns to exclude from standard scaling     # necemo skalirati INT obelezja,
 # jer su to diskretne varijable. FLOAT obelezja hocemo jer ce obuka klasifikatora biti brza 
@@ -45,12 +46,17 @@ X = merged.values
 clf = svm.SVC(kernel='linear')
 
 # Create the RFE model and select 3 attributes
-rfe = RFE(clf, n_features_to_select=3)
+rfe = RFE(clf, n_features_to_select=10)
 rfe = rfe.fit(X, y)
 
 # Summarize the selection of the attributes
-print(rfe.support_)
+print('rfe.support_')
+mask = rfe.support_
+print(mask)
+print('rfe.ranking_')
 print(rfe.ranking_)
+selected_feature_names = [feature_names[i] for i, selected in enumerate(mask) if selected]
+print(f'selected_names: {selected_feature_names}')
 
 # 2
 # Filter Methods: Filter methods use a ranking metric to evaluate the importance of each feature. 
@@ -68,6 +74,7 @@ selector = SelectKBest(f_classif, k=3)
 selector.fit(X, y)
 
 # Summarize the selection of the attributes
+print('selector.get_support():')
 print(selector.get_support())
 
 
@@ -87,6 +94,7 @@ lasso = Lasso(alpha=0.1)
 lasso.fit(X, y)
 
 # Summarize the selection of the attributes
+print('lasso.coef_:')
 print(lasso.coef_)
 
 
