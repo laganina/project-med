@@ -1,5 +1,5 @@
-import tensorflow
-import keras
+# import tensorflow
+# import keras
 import pandas as pd
 import numpy as np
 
@@ -7,7 +7,7 @@ import numpy as np
 # *********** RANO NEUROLOSKO POBOLJSANJE *******************
 # ***********************************************************
 
-data = pd.read_excel(r'C:\Users\Olivera\Desktop\FTN rad\podaci.xlsx')    # ZAMENI PUTANJU 
+data = pd.read_excel(r'C:\Users\Olivera\Documents\PythonScripts\SlogOporavakProjekat2022-23\project-med\project\podaci.xlsx')    # ZAMENI PUTANJU 
 
 # ****************************************
 # *********** df_basic *******************
