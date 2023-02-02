@@ -1,5 +1,3 @@
-import tensorflow
-import keras
 import pandas as pd
 import numpy as np
 import sklearn
@@ -7,9 +5,9 @@ import matplotlib.pyplot as plt
 from sklearn import svm
 from sklearn import metrics
 # from project.podaci_drugi import df, df_rankin
-from podaci_drugi import df, df_rankin
+from podaci_drugi import obelezja, labela
 from sklearn.metrics import precision_score, recall_score, f1_score
-from sklearn.metrics import precision_score, recall_score, f1_score, roc_auc_score, roc_curve
+from sklearn.linear_model import LinearRegression
 
 # IMAMO UKUPNO 6 KLASA - TACNOST JE NESTO VECA OD 50 POSTO
 # Broj uzoraka u 0-toj klasi je: [71]
@@ -24,8 +22,8 @@ from sklearn.metrics import precision_score, recall_score, f1_score, roc_auc_sco
 
 
 # DODAJEM
-obelezja = df
-y = df_rankin
+
+y = labela
 
 y = y.values.ravel()   # flattens the numpy array
 
@@ -73,6 +71,7 @@ from sklearn.multiclass import OneVsRestClassifier    # ovo je za multilabel kla
 
 # create an instance of the model
 clf = OneVsRestClassifier(svm.SVC(probability=True))
+
 # In the above example, we are using roc_auc_ovr as the scoring metric which
 # stands for ROC AUC for one-vs-rest classification.
 
@@ -87,18 +86,78 @@ clf = OneVsRestClassifier(svm.SVC(probability=True))
 # # print the mean ROC AUC score
 # print("ROC AUC: %0.2f (+/- %0.2f)" % (scores.mean(), scores.std() * 2))
 
+scorer = cross_val_score(clf, obelezja, y, cv=5, scoring='accuracy')
+print(f'tacnost: {scorer}')
+print(f'mean acc: {np.mean(scorer)}')
+print(f'*************************************************')
 
-scorer = cross_val_score(clf, obelezja, y, cv=5, scoring='precision_micro')
+scorer = cross_val_score(clf, obelezja, y, cv=5, scoring='precision_macro')
 print(f'preciznost: {scorer}')
+print(f'mean prec: {np.mean(scorer)}')
+print(f'*************************************************')
 
-scorer = cross_val_score(clf, obelezja, y, cv=5, scoring='recall_micro')
+scorer = cross_val_score(clf, obelezja, y, cv=5, scoring='recall_macro')
 print(f'recall: {scorer}')
+print(f'mean recall: {np.mean(scorer)}')
+print(f'*************************************************')
 
-scorer = cross_val_score(clf, obelezja, y, cv=5, scoring='f1_micro')
+scorer = cross_val_score(clf, obelezja, y, cv=5, scoring='f1_macro')
 print(f'f1: {scorer}')
+print(f'mean f1: {np.mean(scorer)}')
+print(f'*************************************************')
 
 scorer = cross_val_score(clf, obelezja, y, cv=5, scoring='roc_auc_ovr')
 print(f'roc_auc: {scorer}')
+print(f'mean auc: {np.mean(scorer)}')
+print(f'*************************************************')
+# The average='macro' is used because it's multi-label classification.
+
+# ****************************************
+from sklearn.model_selection import cross_val_predict
+from sklearn.metrics import roc_auc_score
+# roc auc na drugi nacin:
+print('ROC AUC NA DRUGI NACIN:')
+# Assume clf is your SVM classifier
+# from sklearn.preprocessing import MultiLabelBinarizer
+# mlb = MultiLabelBinarizer()
+# y = mlb.fit_transform(y)    # stavlja svaku klasu u posebnu kolonu
+
+# Assume y is your current labels in a single column
+# Create a dataframe from y
+df = pd.DataFrame(y, columns=['labels'])
+
+# Use the 'str.get_dummies' method to convert the 'labels' column to multiple columns
+df = pd.get_dummies(df, columns=['labels'])
+y = df.values
+
+
+
+clf = OneVsRestClassifier(svm.SVC(probability=True))
+predictions = cross_val_predict(clf, obelezja, y, cv=5, method='predict_proba')
+
+# Compute AUC for each class
+print('y shape:')
+print(y.shape)
+aucs = []
+for i in range(y.shape[1]):
+    auc = roc_auc_score(y[:, i], predictions[:, i])
+    aucs.append(auc)
+
+print("AUC scores:", aucs)    # ovo je za svaku klasu
+print(f'mean auc: {np.mean(aucs)}')
+print(f'*************************************************')
+# This code uses the cross_val_predict function from scikit-learn to perform
+# cross-validation and get predictions for each fold. The method='predict_proba'
+#  is used to predict the probability of each class and probability=True is used
+#  to enable predict_proba method.
+# Then, it uses the roc_auc_score function to compute the AUC score for each class.
+# The y[:, i] and predictions[:, i] are used to select the i-th column of y and
+#  predictions respectively because it's multi-label classification.
+# You can take average of aucs or select the one with maximum value as per your
+# requirement.
+
+
+
 
 
 
@@ -139,3 +198,24 @@ print(f'roc_auc: {scorer}')
 # the nature of the data, and the desired results. It is a good practice to try out different evaluation metrics and choose
 #  the one that best suits the problem at hand.
 
+
+# averaging:
+
+# Macro-averaged: This method computes the average of the metric computed
+#  for each class, independently of the others.
+
+# Micro-averaged: This method computes the metric considering all classes
+# together, by counting the total number of true positives, false positives
+# and false negatives.
+
+# The choice of averaging method will depend on the specific characteristics
+#  of the dataset, and the goals of the classification task. For example, if
+#   you want to penalize all types of errors equally, you may want to use Hamming
+#   loss or EMR. If you want to balance precision and recall, you may want to use
+#   F1-Score. If you want to have an idea of how many instances are classified correctly,
+#   you may want to use EMR. If you want to have an idea of the performance of each class
+#    independently, you may want to use Macro-averaged method. If you want to have an idea
+#     of the performance of the model, you may want to use Micro-averaged method.
+
+# It's always a good idea to experiment with different metrics and averaging methods, and choose
+#  the one that gives the best results for your specific use case.

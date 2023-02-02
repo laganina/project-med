@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 from sklearn import svm
 from sklearn import metrics
 # from project.podaci_drugi import df, df_rankin
-from proba2 import df, df_rankin
+from podaci_drugi import df, df_rankin
 from sklearn.metrics import precision_score, recall_score, f1_score
 
 # IMAMO UKUPNO 6 KLASA - TACNOST JE NESTO VECA OD 50 POSTO
@@ -118,3 +118,4 @@ print('Recall: %.3f' % recall_score(y_test, y_pred, average='micro'))
 print('F1 Score: %.3f' % f1_score(y_test, y_pred, average='micro'))
 
 # fali krosvalidacija
+

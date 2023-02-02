@@ -189,3 +189,13 @@ plt.plot([0, 0], [1, 0], c=".7"), plt.plot([1, 1], c=".7")
 plt.ylabel('True Positive Rate')
 plt.xlabel('False Positive Rate')
 plt.show()
+
+clf = svm.SVC(kernel='linear') #, C=2)
+clf.fit(x_train, y_train)
+y_pred = clf.predict(x_test)
+
+acc = metrics.accuracy_score(y_test, y_pred)
+print('Accuracy: ', acc)
+print('Precision: %.3f' % precision_score(y_test, y_pred, average='micro'))
+print('Recall: %.3f' % recall_score(y_test, y_pred, average='micro'))
+print('F1 Score: %.3f' % f1_score(y_test, y_pred, average='micro'))
