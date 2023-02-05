@@ -7,7 +7,8 @@ import numpy as np
 # *********** RANO NEUROLOSKO POBOLJSANJE *******************
 # ***********************************************************
 
-data = pd.read_excel(r'C:\Users\Olivera\Documents\PythonScripts\SlogOporavakProjekat2022-23\project-med\project\podaci.xlsx')    # ZAMENI PUTANJU 
+# data = pd.read_excel(r'C:\Users\Olivera\Documents\PythonScripts\SlogOporavakProjekat2022-23\project-med\project\podaci.xlsx')    # ZAMENI PUTANJU 
+data = pd.read_excel(r'C:\Users\Olivera\Desktop\FTN rad\Izrada\PROJEKAT\Olivera\podaci.xlsx')    # ZAMENI PUTANJU
 
 # ****************************************
 # *********** df_basic *******************
