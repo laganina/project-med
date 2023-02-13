@@ -1,7 +1,8 @@
 import numpy as np
 import pandas as pd
 
-data = pd.read_excel(r'C:\Users\Laganina\OneDrive - Univerzitet u Novom Sadu\Desktop\machine_learning\project-med\project-med\podaci.xlsx')
+# data = pd.read_excel(r'C:\Users\Laganina\OneDrive - Univerzitet u Novom Sadu\Desktop\machine_learning\project-med\project-med\podaci.xlsx')
+data = pd.read_excel(r'C:\Users\Olivera\Documents\PythonScripts\SlogOporavakProjekat2022-23\project-med\podaci.xlsx')
 
 df_tipCVI = data[['TIP CVI']]
 df_tipCVI = pd.DataFrame(df_tipCVI)

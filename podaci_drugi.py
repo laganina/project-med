@@ -1,5 +1,3 @@
-import tensorflow
-import keras
 import pandas as pd
 import numpy as np
 from pol import df_pol
@@ -10,7 +8,10 @@ from toast import df_toast
 #----------------------------------------------------------------------------------------------------------------------#
 #----------------------------------------------------------------------------------------------------------------------#
 # zameni putanju!!!!
-data = pd.read_excel(r'C:\Users\Laganina\OneDrive - Univerzitet u Novom Sadu\Desktop\machine_learning\project-med\project-med\podaci.xlsx')    # ZAMENI PUTANJU
+# data = pd.read_excel(r'C:\Users\Laganina\OneDrive - Univerzitet u Novom Sadu\Desktop\machine_learning\project-med\project-med\podaci.xlsx')    # ZAMENI PUTANJU
+data = pd.read_excel(r'C:\Users\Olivera\Documents\PythonScripts\SlogOporavakProjekat2022-23\project-med\podaci.xlsx')
+
+
 #komplikacije (infekcija, duboke tromboze, nema=0)
 #----------------------------------------------------------------------------------------------------------------------#
 #----------------------------------------------------------------------------------------------------------------------#
@@ -78,4 +79,5 @@ obelezja = obelezja.drop(labels='RANKIN 90 dana',axis=1)
 
 print(obelezja.shape)
 print(labela.shape)
+print(obelezja.info())
 # sada ide podela na manji broj klasa i krosvalidacija

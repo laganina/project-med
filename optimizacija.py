@@ -1,4 +1,5 @@
 from sklearn.svm import SVC
+import skopt 
 from skopt import BayesSearchCV    # pip install scikit-optimize
 from sklearn.datasets import load_iris
 from podaci_prvi import obelezja, labela
@@ -30,12 +31,35 @@ X = merged.values
 
 
 
-opt = BayesSearchCV(SVC(),
-                   {'C': (1e-3, 1e3, 'log-uniform'),
-                    'gamma': (1e-3, 1e3, 'log-uniform')},
-                   n_iter=32,
-                   cv=5,
-                   random_state=0)
+# opt = BayesSearchCV(SVC(),
+#                    {'C': (1e-3, 1e3, 'log-uniform'),
+#                     'gamma': (1e-3, 1e3, 'log-uniform'),
+#                     'kernel': },
+#                    n_iter=32,
+#                    cv=5,
+#                    random_state=0)
+
+
+
+
+bounds = {
+    'C': (1e-1, 100,'log-uniform'),  # Continuous boundary condition for C
+    'gamma': (1e-1, 100,'log-uniform'),  # Integer boundary condition for gamma
+    'degree': (1, 3),  # Continuous boundary condition for degree
+    'kernel': ["rbf", "poly", 'linear'],  # Categorical boundary condition for kernel
+}
+
+opt = BayesSearchCV(
+    SVC(),
+    bounds,
+    random_state=0,
+    n_jobs=1,
+    n_iter=32,
+    cv=5,                 # krosvalidacija vrvtn
+)
+
+
+
 
 opt.fit(X, y)
 
